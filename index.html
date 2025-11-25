@@ -1,21 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Admin Login</title>
-    <link rel="stylesheet" href="admin.css">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Ehsan Collection</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css"/>
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen">
 
-<div class="login-box">
-    <h2>Admin Login</h2>
+  <!-- Top bar with Admin / SuperAdmin login -->
+  <header class="bg-white shadow sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto flex items-center justify-between p-4">
+      <div class="flex items-center gap-4">
+        <a href="admin.html" class="flex items-center gap-3">
+          <img id="site-logo" src="logo.png" alt="Ehsan Collection" class="h-12 w-auto"/>
+          <span class="text-2xl font-bold">Ehsan Collection</span>
+        </a>
+      </div>
 
-    <input id="user" type="text" placeholder="Username">
-    <input id="pass" type="password" placeholder="Password">
+      <div class="flex items-center gap-3">
+        <button id="cart-button" class="relative bg-white border px-3 py-2 rounded-md shadow-sm">
+          Cart <span id="cart-badge" class="ml-2 inline-block bg-red-500 text-white text-xs px-2 py-0 rounded-full">0</span>
+        </button>
 
-    <button onclick="login()">Login</button>
-    <p id="error" class="error"></p>
-</div>
+        <a href="admin.html" id="admin-top-btn" class="bg-blue-600 text-white px-4 py-2 rounded-md hidden">Admin</a>
+      </div>
+    </div>
+  </header>
 
-<script src="admin.js"></script>
+  <!-- Hero -->
+  <main class="max-w-6xl mx-auto p-6">
+    <section class="text-center py-10 bg-white rounded-xl mb-6">
+      <h1 class="hero-title text-4xl font-extrabold mb-2">Ehsan Collection</h1>
+      <p class="hero-subtext text-gray-600">International standard responsive online shop — no customer login required.</p>
+    </section>
+
+    <!-- Products grid -->
+    <section id="products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></section>
+
+    <!-- Checkout & info area -->
+    <section id="contact" class="mt-8 text-center text-gray-600">
+      <p>Questions? WhatsApp: <a href="https://wa.me/923018067880" target="_blank" rel="noopener" class="text-green-600 font-semibold">+92 301 8067880</a></p>
+    </section>
+  </main>
+
+  <!-- Floating WhatsApp quick button -->
+  <a href="https://wa.me/923018067880" target="_blank" rel="noopener" class="whatsapp-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M..."/></svg>
+    <span>WhatsApp</span>
+  </a>
+
+  <!-- Cart slideover (built by main.js) -->
+  <script src="main.js"></script>
 </body>
 </html>
