@@ -1,77 +1,63 @@
-<!-- File: products.html -->
-<!DOCTYPE html>
-<html lang="ur" dir="rtl">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Products - MAH Store</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="products.css"> <!-- New CSS for product page layout -->
+  <meta charset="utf-8" />
+  <title>Products — E-Commerce</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="products.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
-    <header id="main-header">
-        <!-- Re-use the header content from index.html -->
-    </header>
+  <header class="topbar">
+    <div class="container">
+      <a href="index.html" class="logo">E-Commerce</a>
+      <nav>
+        <a href="cart.html" id="cart-count-link">Cart (<span id="cart-count">0</span>)</a>
+        <a href="login.html" id="login-link">Login</a>
+      </nav>
+    </div>
+  </header>
 
-    <main id="products-main">
-        <div class="products-container">
-            <h2>تمام مصنوعات کی فہرست (All Products)</h2>
-            
-            <div class="main-content-grid">
-                
-                <!-- سائیڈ بار: فلٹرز -->
-                <aside id="filter-sidebar">
-                    <h3>🔍 فلٹرز اور کیٹیگریز</h3>
-                    <div class="filter-group">
-                        <h4>کیٹیگریز (Categories)</h4>
-                        <ul id="categories-list">
-                            <li><a href="#" data-category="all" class="active-category">تمام (All)</a></li>
-                            <li><a href="#" data-category="electronics">الیکٹرانکس</a></li>
-                            <li><a href="#" data-category="fashion">فیشن</a></li>
-                            <li><a href="#" data-category="home">گھر اور زندگی</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <h4>قیمت کی حد (Price Range)</h4>
-                        <input type="range" id="price-range-slider" min="1000" max="500000" value="500000">
-                        <p>زیادہ سے زیادہ: <span id="max-price-display">500,000 PKR</span></p>
-                    </div>
-                    
-                    <button class="apply-filters-btn">فلٹرز لاگو کریں</button>
-                </aside>
-                
-                <!-- پروڈکٹ کی فہرست -->
-                <section id="product-list-area">
-                    <div class="controls-bar">
-                        <p><span id="product-count">0</span> پروڈکٹس دکھائے جا رہے ہیں</p>
-                        <select id="sort-by">
-                            <option value="default">ترتیب (Default)</option>
-                            <option value="price-asc">کم قیمت پہلے</option>
-                            <option value="price-desc">زیادہ قیمت پہلے</option>
-                            <option value="name-asc">نام (A-Z)</option>
-                        </select>
-                    </div>
+  <main class="container page">
+    <section class="controls">
+      <div>
+        <input id="search" placeholder="Search products..." />
+        <select id="category-filter"><option value="">All categories</option></select>
+      </div>
+      <div class="right">
+        <button id="btn-new-product">+ New Product</button>
+        <button id="btn-import">Import</button>
+        <button id="btn-export">Export</button>
+      </div>
+    </section>
 
-                    <!-- Product Grid will be loaded here by product.js -->
-                    <div id="product-grid" class="product-grid">
-                        <p class="loading-message">مصنوعات لوڈ ہو رہی ہیں...</p>
-                    </div>
-                    
-                    <div class="pagination-controls">
-                        <!-- Pagination buttons here -->
-                    </div>
-                </section>
-            </div>
+    <section id="product-list" class="grid"></section>
+
+    <nav class="pagination" id="pagination"></nav>
+  </main>
+
+  <!-- Product Modal -->
+  <div id="product-modal" class="modal hidden" aria-hidden="true">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <h3 id="modal-title">Add Product</h3>
+      <form id="product-form">
+        <label>Title <input name="title" required /></label>
+        <label>Price <input name="price" type="number" min="0" required /></label>
+        <label>Category <input name="category" /></label>
+        <label>Stock <input name="stock" type="number" min="0" /></label>
+        <label>Description <textarea name="description"></textarea></label>
+        <label>Image <input type="file" name="image" accept="image/*" /></label>
+        <div class="form-actions">
+          <button type="submit">Save</button>
+          <button type="button" id="delete-product" class="danger hidden">Delete</button>
         </div>
-    </main>
+      </form>
+    </div>
+  </div>
 
-    <footer id="main-footer">
-        <!-- Re-use the footer content from index.html -->
-    </footer>
-
-    <script src="main.js"></script> <!-- Re-use main script for cart functions -->
-    <script src="products.js"></script> <!-- New script for product listing logic -->
+  <script src="main.js"></script>
+  <script src="auth.js"></script>
+  <script src="products.js"></script>
 </body>
 </html>
