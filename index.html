@@ -1,70 +1,37 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAH Store - Your Global Shopping Destination</title>
-    <!-- Your main CSS file for styling -->
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <title>Home — E-Commerce</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- 1. Header and Navigation -->
-    <header>
-        <div id="logo">
-            <!-- Logo will go here (e.g., <img src="logo.png" alt="MAH Store Logo">) -->
-            <h1>MAH Store</h1>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="products.html">Shop</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li id="cart-icon"><a href="cart.html">🛒 Cart (0)</a></li>
-            </ul>
-        </nav>
-    </header>
+  <header class="topbar">
+    <div class="container">
+      <a href="index.html" class="logo">E-Commerce</a>
+      <nav>
+        <a href="products.html">Products</a>
+        <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+        <a href="login.html" id="login-link">Login</a>
+      </nav>
+    </div>
+  </header>
 
-    <!-- 2. Main Content Area (Example: A hero section) -->
-    <main>
-        <section class="hero">
-            <h2>Welcome to MAH Store</h2>
-            <p>Experience international quality and seamless online shopping.</p>
-            <a href="products.html" class="cta-button">Shop Now</a>
-        </section>
+  <main class="container page">
+    <h1>Welcome to the Store</h1>
+    <p>Open <a href="products.html">products</a> to browse items or use the admin panel to add products.</p>
+  </main>
 
-        <!-- 3. Featured Products Section -->
-        <section class="featured-products">
-            <h3>Featured Items</h3>
-            <!-- Products will be loaded here using JavaScript -->
-            <div id="product-list">
-                <!-- Example Product Card (Add more as needed) -->
-                <div class="product-card">
-                    <img src="placeholder.jpg" alt="Product Name">
-                    <h4>Product Title</h4>
-                    <p class="price">$99.99</p>
-                    <button class="add-to-cart" data-product-id="1">Add to Cart</button>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- 4. Footer -->
-    <footer>
-        <p>&copy; 2025 MAH Store. All Rights Reserved.</p>
-        <div class="social-links">
-            <!-- Add social media links here -->
-        </div>
-    </footer>
-
-    <!-- Your main JavaScript file for interactivity -->
-    <script src="main.js"></script>
-    <!-- For index.html / all pages -->
-<a href="https://wa.me/923001234567?text=Hello%20MAH%20Store.%20I%20have%20a%20question." 
-   target="_blank" 
-   class="whatsapp-float-btn" 
-   aria-label="Chat with us on WhatsApp">
-    <img src="whatsapp-icon.png" alt="WhatsApp"> 
-</a>
+  <script src="main.js"></script>
+  <script>
+    function updateCart(){
+      const c = App.StorageService.get('cart','v1') || [];
+      const el = document.getElementById('cart-count');
+      if (el) el.textContent = c.reduce((s,i)=>s+i.qty,0);
+    }
+    updateCart();
+    window.addEventListener('storage', (e)=> { if (e.key && e.key.includes('ecom_cart_v1_changed')) updateCart(); });
+  </script>
 </body>
 </html>
