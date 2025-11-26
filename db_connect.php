@@ -1,22 +1,28 @@
-// File: db_connect.php
-// This file establishes a secure connection to the MySQL database.
+<?php
+/* db_connect.php
+   Example mysqli connection helper. Put actual credentials in server environment or a protected config file.
+   NOTE: This file is a helper template. Don't commit real credentials to version control.
+*/
 
-// Database Credentials (REPLACE with your actual credentials)
-define('DB_SERVER', 'localhost');
-definedefine('DB_USERNAME', 'mah_store_user');
-define('DB_PASSWORD', 'YourStrongPassword123'); // **IMPORTANT: Change this!**
-define('DB_NAME', 'mah_store_db');
+$DB_HOST = 'localhost';
+$DB_USER = 'dbuser';
+$DB_PASS = 'dbpass';
+$DB_NAME = 'ecomdb';
+$DB_PORT = 3306;
 
-/* Attempt to connect to MySQL database */
-$conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-
-// Check connection
-if($conn === false){
-    die("ERROR: Could not connect to the database. " . $conn->connect_error);
+$mysqli = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME, $DB_PORT);
+if ($mysqli->connect_errno) {
+    error_log("MySQL Connection failed: " . $mysqli->connect_error);
+    http_response_code(500);
+    echo json_encode(['error' => 'Database connection error']);
+    exit;
 }
+$mysqli->set_charset("utf8mb4");
 
-// Set character set to UTF8 for proper Urdu/Arabic and international character support
-$conn->set_charset("utf8mb4");
-
-// For security, never echo credentials or sensitive info here!
+/* Example usage:
+   $stmt = $mysqli->prepare("SELECT id, name FROM products WHERE id = ?");
+   $stmt->bind_param('i', $id);
+   $stmt->execute();
+   $res = $stmt->get_result();
+*/
 ?>
