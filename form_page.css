@@ -1,8 +1,0 @@
-/* form_page.css */
-.container{max-width:900px;margin:0 auto;padding:20px}
-.auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-form{background:#fff;padding:16px;border-radius:8px}
-label{display:block;margin-bottom:8px}
-input,textarea,select{width:100%;padding:8px;border:1px solid #ddd;border-radius:6px}
-.small{font-size:13px;color:#666;margin-top:8px}
-.btn{padding:8px 12px;border-radius:6px;border:0;background:#0ea5a4;color:#fff}
