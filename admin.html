@@ -1,33 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Login – ZentroMall</title>
-  <link rel="icon" href="logo.png"/>
+  <meta charset="UTF-8"/>
+  <title>Admin Login</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-indigo-900 to-purple-900 min-h-screen flex items-center justify-center">
-  <div class="bg-white p-10 rounded-3xl shadow-2xl max-w-md w-full text-center">
-    <img src="logo.png" alt="ZentroMall" class="h-24 mx-auto mb-6">
-    <h1 class="text-4xl font-bold mb-8 text-indigo-800">ADMIN LOGIN</h1>
-    
-    <input type="password" id="adminpass" placeholder="Enter Admin Password" class="w-full p-4 rounded-lg border-2 border-indigo-600 text-xl mb-6">
-    <button onclick="checkAdmin()" class="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-xl text-2xl font-bold">
-      Login as Admin
+<body class="bg-gradient min-h-screen flex items-center justify-center">
+  <div class="bg-white p-12 rounded-3xl shadow-2xl text-center">
+    <h1 class="text-5xl font-bold text-indigo-800 mb-8">ADMIN LOGIN</h1>
+    <input type="password" id="pass" placeholder="Password" class="w-full p-5 rounded-xl border-2 text-xl mb-6">
+    <button onclick="loginAdmin()" class="w-full bg-green-600 text-white py-5 rounded-xl text-2xl font-bold">
+      Login
     </button>
-    <p class="text-sm text-gray-600 mt-4">Default Password: <strong>asad123</strong> (change kar dena baad mein)</p>
+    <p class="mt-4 text-gray-600">Default: asad123</p>
   </div>
 
   <script src="main.js"></script>
   <script>
-    function checkAdmin() {
-      const pass = document.getElementById("adminpass").value;
-      if (pass === localStorage.getItem("zm_admin_pass") || pass === "asad123") {
+    function loginAdmin() {
+      const input = document.getElementById("pass").value;
+      const real = localStorage.getItem("zm_admin_pass") || "asad123";
+      if (input === real) {
         localStorage.setItem("zm_admin_logged", "true");
-        window.location.href = "admin-panel.html"; // new protected page
+        location.href = "admin-panel.html";
       } else {
-        alert("❌ Wrong Password!");
+        alert("غلط پاس ورڈ!");
       }
     }
   </script>
