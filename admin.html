@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html><head>
+  <meta charset="UTF-8"><title>Admin - ZentroMall</title>
+  <link rel="icon" href="logo.png"/>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+  <div class="container mx-auto px-4 py-10">
+    <h1 class="text-5xl font-bold text-center mb-10 text-yellow-500">ADMIN PANEL</h1>
+    
+    <div class="bg-gray-800 p-8 rounded-xl shadow-2xl max-w-2xl mx-auto">
+      <input type="text" id="name" placeholder="Product Name" class="w-full p-3 mb-4 rounded bg-gray-700"><br>
+      <input type="number" id="price" placeholder="Price" class="w-full p-3 mb-4 rounded bg-gray-700"><br>
+      <input type="text" id="image" placeholder="Image URL" class="w-full p-3 mb-4 rounded bg-gray-700"><br>
+      <input type="text" id="desc" placeholder="Description" class="w-full p-3 mb-6 rounded bg-gray-700"><br>
+      <button onclick="addProduct()" class="w-full bg-green-600 py-4 rounded text-xl font-bold hover:bg-green-500">Add Product</button>
+    </div>
+
+    <h2 class="text-3xl mt-16 mb-8 text-center">All Products</h2>
+    <div id="admin-products" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+  </div>
+
+  <script src="main.js"></script>
+  <script>
+    function addProduct() {
+      const name = document.getElementById("name").value;
+      const price = parseInt(document.getElementById("price").value);
+      const image = document.getElementById("image").value;
+      const desc = document.getElementById("desc").value;
+      if (!name || !price) return alert("Fill all fields");
+
+      let products = JSON.parse(localStorage.getItem("products"));
+      const newId = Math.max(...products.map(p => p.id)) + 1;
+      products.push({id: newId, name, price, image, desc});
+      localStorage.setItem("products", JSON.stringify(products));
+      alert("Product Added!");
+      location.reload();
+    }
+
+    const container = document.getElementById("admin-products");
+    const products = JSON.parse(localStorage.getItem("products"));
+    container.innerHTML = products.map(p => `
+      <div class="bg-gray-800 p-6 rounded-xl">
+        <img src="${p.image}" class="w-full h-48 object-cover rounded">
+        <h3 class="text-xl font-bold mt-4">${p.name}</h3>
+        <p>₹${p.price}</p>
+        <button onclick="deleteProduct(${p.id})" class="bg-red-600 w-full mt-4 py-2 rounded">Delete</button>
+      </div>
+    `).join("");
+
+    function deleteProduct(id) {
+      if(confirm("Delete this product?")) {
+        let products = JSON.parse(localStorage.getItem("products"));
+        products = products.filter(p => p.id !== id);
+        localStorage.setItem("products", JSON.stringify(products));
+        location.reload();
+      }
+    }
+  </script>
+</body></html>
