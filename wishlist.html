@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen">
+
+  <!-- Header -->
   <header role="banner" class="bg-indigo-800 dark:bg-indigo-950 shadow-xl sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
       <a href="index.html" class="flex items-center gap-4">
@@ -20,6 +22,7 @@
     </div>
   </header>
 
+  <!-- Wishlist Content -->
   <div class="max-w-4xl mx-auto px-4 py-16">
     <h1 class="text-5xl font-bold text-center mb-12">Your Wishlist</h1>
     <div id="wishlist-items" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
@@ -27,19 +30,40 @@
 
   <script src="main.js"></script>
   <script>
-    const wishlist = JSON.parse(localStorage.getItem("zm_wishlist") || "[]");
-    document.getElementById("wishlist-items").innerHTML = wishlist.length ? wishlist.map(id => {
-      const p = products.find(x => x.id === id);
-      return p ? `
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl flex items-center justify-between">
-          <img src="${p.image}" alt="${p.name}" class="w-24 h-24 object-cover rounded" />
-          <div class="flex-1 mx-6">
-            <h3 class="text-2xl font-bold">${p.name}</h3>
-            <p class="text-gray-600 dark:text-gray-300">₹${p.price.toLocaleString()}</p>
-          </div>
-          <button onclick="toggleWishlist(${p.id})" class="bg-red-500 text-white px-6 py-3 rounded" aria-label="Remove from wishlist">❤️ Remove</button>
-        </div>` : "";
-    }).join("") : "<p class='text-center text-2xl'>Wishlist is empty</p>";
+    function renderWishlist() {
+      const wishlist = JSON.parse(localStorage.getItem("zm_wishlist") || "[]");
+      const container = document.getElementById("wishlist-items");
+
+      if (!wishlist.length) {
+        container.innerHTML = "<p class='text-center text-2xl'>Your wishlist is empty</p>";
+        return;
+      }
+
+      container.innerHTML = wishlist.map(id => {
+        const p = products.find(x => x.id === id);
+        if (!p) return "";
+        return `
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl flex items-center justify-between hover:scale-105 transition">
+            <img src="${p.image}" alt="${p.name}" class="w-24 h-24 object-cover rounded" />
+            <div class="flex-1 mx-6">
+              <h3 class="text-2xl font-bold">${p.name}</h3>
+              <p class="text-gray-600 dark:text-gray-300">₨${p.price.toLocaleString()}</p>
+            </div>
+            <div class="flex flex-col gap-2">
+              <button onclick="addToCart(${p.id}); toggleWishlist(${p.id}); renderWishlist();" 
+                      class="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700" aria-label="Move to Cart">
+                🛒 Add to Cart
+              </button>
+              <button onclick="toggleWishlist(${p.id}); renderWishlist();" 
+                      class="bg-red-500 text-white px-6 py-3 rounded hover:bg-red-600" aria-label="Remove from wishlist">
+                ❤️ Remove
+              </button>
+            </div>
+          </div>`;
+      }).join("");
+    }
+
+    renderWishlist();
     updateCartCount();
   </script>
 </body>
