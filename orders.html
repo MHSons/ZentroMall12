@@ -1,42 +1,41 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="ur" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Track your orders at ZentroMall." />
-  <title>Orders – ZentroMall</title>
-  <link rel="icon" href="logo.png" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>آرڈر ہسٹری – ZentroMall</title>
+  <link rel="icon" href="logo.png">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen">
-  <header role="banner" class="bg-indigo-800 dark:bg-indigo-950 shadow-xl sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-      <a href="index.html" class="flex items-center gap-4">
-        <img src="logo.png" alt="ZentroMall Logo" class="h-14 rounded-lg" />
-        <h1 class="text-2xl font-bold">ZentroMall</h1>
-      </a>
-      <a href="cart.html" class="hover:text-yellow-400">Cart (<span id="cart-count">0</span>)</a>
-    </div>
-  </header>
+<body class="bg-gray-900 text-white min-h-screen p-4">
 
-  <div class="max-w-4xl mx-auto px-4 py-16">
-    <h1 class="text-5xl font-bold text-center mb-12">Your Orders</h1>
-    <div id="order-list" class="space-y-6"></div>
+  <div class="max-w-5xl mx-auto">
+    <h1 class="text-4xl font-bold text-yellow-400 text-center mb-8">آپ کی آرڈر ہسٹری</h1>
+
+    <div id="orderList" class="space-y-6">
+      <!-- Orders here -->
+    </div>
   </div>
 
   <script src="main.js"></script>
   <script>
-    const userOrders = orders.filter(o => o.customer.phone === (currentUser?.phone || ""));
-    document.getElementById("order-list").innerHTML = userOrders.length ? userOrders.map(o => `
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl">
-        <p class="text-xl font-bold">Order Date: ${o.date}</p>
-        <p class="text-lg">Total: ₹${o.total.toLocaleString()}</p>
-        <ul class="mt-2 list-disc list-inside">
-          ${o.items.map(i => `<li>${products.find(p => p.id === i.id).name} × ${i.qty}</li>`).join("")}
-        </ul>
-      </div>`).join("") : "<p class='text-center text-2xl'>No orders yet</p>";
-    updateCartCount();
+    if (!currentUser) {
+      alert("لاگین کریں!");
+      location.href = "login.html";
+    }
+
+    const userOrders = orders.filter(o => o.customer.phone === currentUser.phone);
+    
+    const orderList = document.getElementById("orderList");
+    orderList.innerHTML = userOrders.length ? userOrders.map(o => `
+      <div class="bg-gray-800 rounded-2xl p-6 shadow-xl">
+        <p class="text-2xl font-bold text-green-400 mb-2">آرڈر #${orders.indexOf(o)+1}</p>
+        <p class="text-gray-300 mb-4">تاریخ: ${o.date}</p>
+        <p class="mb-2">ٹوٹل: ${formatPrice(o.total)}</p>
+        <p class="mb-2">سٹیٹس: <span class="${o.status === 'complete' ? 'text-green-400' : 'text-yellow-400'} font-bold">${o.status || 'pending'}</span></p>
+        <p class="mb-2">ٹریکنگ ID: <span class="text-blue-400 font-bold">${o.tracking_id || 'ابھی نہیں ملا'}</span></p>
+        <p class="text-sm text-gray-400">اگر ٹریکنگ ID ملا ہے تو TCS/Leopard ایپ میں چیک کریں</p>
+      </div>`).join("") : "<p class='text-center text-2xl text-gray-500'>کوئی آرڈر نہیں</p>";
   </script>
 </body>
 </html>
