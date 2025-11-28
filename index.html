@@ -25,6 +25,7 @@
         <a href="index.html" class="hover:text-yellow-400">Home</a>
         <a href="products.html" class="hover:text-yellow-400">Products</a>
         <a href="cart.html" class="hover:text-yellow-400">Cart (<span id="cart-count">0</span>)</a>
+        <a href="wishlist.html" class="hover:text-yellow-400">Wishlist</a>
         <a href="orders.html" class="hover:text-yellow-400">Orders</a>
         <a href="login.html" class="hover:text-yellow-400">Login</a>
         <button onclick="toggleTheme()" class="px-4 py-2 bg-gray-700 rounded" aria-label="Toggle Dark/Light Mode">🌙</button>
@@ -32,6 +33,13 @@
       </nav>
     </div>
   </header>
+
+  <!-- Flash Sale Banner -->
+  <div class="bg-red-600 text-white p-3 text-center overflow-x-auto whitespace-nowrap">
+    <span class="mx-4">🎉 FLASH SALE: iPhone 15 Pro – 30% OFF!</span>
+    <span class="mx-4">🔥 MacBook Pro M3 – Limited Stock!</span>
+    <span class="mx-4">⚡ Free Shipping on Orders Above ₹5000</span>
+  </div>
 
   <!-- Hero -->
   <div class="bg-gradient-to-r from-purple-800 to-indigo-900 text-white py-20 text-center" role="banner">
@@ -44,6 +52,12 @@
   <div class="max-w-7xl mx-auto px-4 py-16">
     <h2 class="text-4xl font-bold text-center mb-12">Featured Products</h2>
     <div id="featured" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+  </div>
+
+  <!-- Recently Viewed -->
+  <div class="max-w-7xl mx-auto px-4 py-16">
+    <h2 class="text-4xl font-bold text-center mb-12">Recently Viewed</h2>
+    <div id="recently-viewed" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
   </div>
 
   <!-- GDPR Notice -->
@@ -61,7 +75,7 @@
 
   <script src="main.js"></script>
   <script>
-    loadFeatured(); updateCartCount(); loadTheme(); loadLang();
+    loadFeatured(); updateCartCount(); loadTheme(); loadLang(); loadRecentlyViewed();
     if (!localStorage.getItem("zm_consent")) document.getElementById("consent").classList.remove("hidden");
   </script>
 </body>
