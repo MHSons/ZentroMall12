@@ -3,19 +3,166 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout</title>
+  <title>Checkout - ZentroMall</title>
+  <link rel="icon" href="logo.png">
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .glow-btn { box-shadow: 0 0 30px rgba(34, 197, 94, 0.8); }
+    .glow-btn:hover { box-shadow: 0 0 50px rgba(34, 197, 94, 1); }
+  </style>
 </head>
-<body class="bg-gradient-to-br from-purple-900 to-indigo-900 min-h-screen flex items-center justify-center p-4">
-  <div class="bg-white text-black rounded-3xl shadow-2xl p-10 max-w-2xl w-full">
-    <h1 class="text-4xl font-bold text-center mb-8 text-indigo-800">Complete Your Order</h1>
-    <form onsubmit="placeOrder(event)">
-      <input type="text" id="name" placeholder="Full Name" class="w-full p-4 rounded mb-4" required>
-      <input type="tel" id="phone" placeholder="Phone (WhatsApp)" class="w-full p-4 rounded mb-4" required>
-      <textarea id="address" placeholder="Full Address" class="w-full p-4 rounded mb-6 h-32" required></textarea>
-      <button type="submit" class="w-full bg-green-600 text-white py-6 rounded-xl text-2xl font-bold">Order on WhatsApp</button>
-    </form>
+<body class="bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-white min-h-screen flex items-center justify-center p-6">
+
+  <div class="bg-white text-black rounded-3xl shadow-2xl overflow-hidden max-w-2xl w-full">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-green-600 to-emerald-700 p-10 text-center">
+      <h1 class="text-5xl font-extrabold text-white drop-shadow-lg">ZentroMall</h1>
+      <p class="text-2xl text-yellow-300 mt-3 font-bold">Final Step - Order via WhatsApp</p>
+    </div>
+
+    <!-- Form -->
+    <div class="p-10">
+      <form onsubmit="placeOrder(event)" class="space-y-8">
+        <div>
+          <label class="block text-xl font-bold mb-2 text-gray-700">Full Name</label>
+          <input type="text" id="name" placeholder="Ahmed Khan" required
+                 class="w-full p-5 rounded-xl border-2 border-gray-300 focus:border-green-600 text-xl transition">
+        </div>
+
+        <div>
+          <label class="block text-xl font-bold mb-2 text-gray-700">Phone (WhatsApp Number)</label>
+          <input type="tel" id="phone" placeholder="03001234567" required
+                 class="w-full p-5 rounded-xl border-2 border-gray-300 focus:border-green-600 text-xl transition">
+        </div>
+
+        <div>
+          <label class="block text-xl font-bold mb-2 text-gray-700">Complete Delivery Address</label>
+          <textarea id="address" placeholder="House #123, Street 45, DHA Phase 6, Lahore" required rows="4"
+                    class="w-full p-5 rounded-xl border-2 border-gray-300 focus:border-green-600 text-xl transition resize-none"></textarea>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="bg-gray-100 rounded-2xl p-6">
+          <h3 class="text-2xl font-bold mb-4 text-gray-800">Order Summary</h3>
+          <div id="order-items" class="space-y-3 text-lg"></div>
+          <div class="border-t-2 border-gray-300 mt-6 pt-4">
+            <p class="text-3xl font-extrabold text-right text-green-600">
+              Total: <span id="final-total">₨0</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="submitBtn"
+                class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-8 rounded-2xl text-3xl font-extrabold glow-btn transform hover:scale-105 transition duration-300">
+          SEND ORDER ON WHATSApp
+        </button>
+      </form>
+
+      <p class="text-center text-sm text-gray-600 mt-8">
+        Your order will be sent directly to our WhatsApp<br>
+        <strong class="text-green-600">Cash on Delivery Available Across Pakistan</strong>
+      </p>
+    </div>
   </div>
+
   <script src="main.js"></script>
+  <script>
+    // WhatsApp Number (اپنا نمبر ڈال دو)
+    const whatsappNumber = "923001234567"; // ← یہاں اپنا نمبر ڈالنا ضروری ہے!
+
+    function loadOrderSummary() {
+      const container = document.getElementById("order-items");
+      let total = 0;
+      let itemsHTML = "";
+
+      if (cart.length === 0) {
+        container.innerHTML = "<p class='text-center text-gray-500'>Cart is empty</p>";
+        return;
+      }
+
+      cart.forEach(item => {
+        const product = products.find(p => p.id === item.id);
+        if (product) {
+          const itemTotal = product.price * item.qty;
+          total += itemTotal;
+          itemsHTML += `
+            <div class="flex justify-between">
+              <span>${product.name} × ${item.qty}</span>
+              <strong>₨${itemTotal.toLocaleString()}</strong>
+            </div>`;
+        }
+      });
+
+      container.innerHTML = itemsHTML;
+      document.getElementById("final-total").textContent = formatPrice(total);
+    }
+
+    function placeOrder(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const address = document.getElementById("address").value.trim();
+
+      if (!name || !phone || !address || cart.length === 0) {
+        alert("Please fill all fields and add items to cart!");
+        return;
+      }
+
+      let total = 0;
+      let message = `*New Order from ZentroMall*\n\n`;
+      message += `Name: ${name}\n`;
+      message += `Phone: ${phone}\n`;
+      message += `Address: ${address}\n\n`;
+      message += `*Order Details:*\n`;
+
+      cart.forEach(item => {
+        const p = products.find(x => x.id === item.id);
+        if (p) {
+          total += p.price * item.qty;
+          message += `• ${p.name} × ${item.qty} = ₨${(p.price * item.qty).toLocaleString()}\n`;
+        }
+      });
+
+      message += `\n*Total Amount: ₨${total.toLocaleString()}*\n`;
+      message += `Cash on Delivery | Fast Shipping\n`;
+      message += `Thank you for shopping with ZentroMall!`;
+
+      // Save order in localStorage
+      orders.push({
+        date: new Date().toLocaleString("en-PK"),
+        customer: { name, phone, address },
+        items: cart.map(c => ({ ...c, name: products.find(p => p.id === c.id)?.name })),
+        total,
+        status: "pending",
+        tracking_id: ""
+      });
+      saveData();
+
+      // Clear cart
+      cart = [];
+      localStorage.setItem("zm_cart", "[]");
+      updateCartCount();
+
+      // Success Animation
+      const btn = document.getElementById("submitBtn");
+      btn.innerHTML = "Order Sent! Redirecting...";
+      btn.classList.remove("from-green-600", "to-emerald-600");
+      btn.classList.add("bg-yellow-500", "text-black");
+
+      // Open WhatsApp
+      const encoded = encodeURIComponent(message);
+      window.open(`https://wa.me/${whatsappNumber}?text=${encoded}`, "_blank");
+
+      setTimeout(() => {
+        alert("Your order has been sent successfully!\nWe'll contact you soon on WhatsApp");
+        location.href = "index.html";
+      }, 1500);
+    }
+
+    // Load summary when page opens
+    loadOrderSummary();
+  </script>
 </body>
 </html>
