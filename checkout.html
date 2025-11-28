@@ -1,59 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Checkout – ZentroMall</title>
-  <link rel="icon" href="logo.png"/>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-purple-900 to-indigo-900 text-white min-h-screen flex items-center justify-center">
-  <div class="bg-white text-black p-10 rounded-3xl shadow-2xl max-w-2xl w-full">
-    <img src="logo.png" alt="ZentroMall" class="h-24 mx-auto mb-8">
-    <h1 class="text-4xl font-bold text-center mb-8">Complete Your Order</h1>
-    <form onsubmit="placeOrder(event)">
-      <input type="text" id="name" placeholder="پورا نام" class="w-full p-4 rounded mb-4" required>
-      <input type="tel" id="phone" placeholder="فون نمبر (WhatsApp)" class="w-full p-4 rounded mb-4" required>
-      <textarea id="address" placeholder="مکمل ایڈریس" class="w-full p-4 rounded mb-6 h-32" required></textarea>
-      <button type="submit" class="w-full bg-green-600 text-white py-6 rounded-xl text-2xl font-bold">
-        WhatsApp پر آرڈر کریں
-      </button>
-    </form>
-  </div>
+function placeOrder(e) {
+  e.preventDefault();
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const address = document.getElementById("address").value.trim();
 
-  <script src="main.js"></script>
-  <script>
-    function placeOrder(e) {
-      e.preventDefault();
-      const name = document.getElementById("name").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const address = document.getElementById("address").value.trim();
+  if (!name || !phone || !address) return alert("سب فیلڈز بھریں!");
 
-      if (!name || !phone || !address) return alert("سب فیلڈز بھریں!");
+  let total = 0;
+  let msg = `*نیا آرڈر - ZentroMall*\n\n`;
+  msg += `نام: ${name}\nفون: ${phone}\nایڈریس: ${address}\n\n*آرڈر کی تفصیل:*\n`;
 
-      let total = 0;
-      let msg = `*نیا آرڈر - ZentroMall*\n\n`;
-      msg += `نام: ${name}\nفون: ${phone}\nایڈریس: ${address}\n\n*آرڈر کی تفصیل:* \n`;
+  cart.forEach(item => {
+    const p = products.find(x => x.id === item.id);
+    const itemTotal = p.price * item.qty;
+    total += itemTotal;
+    msg += `• ${p.name} × ${item.qty} = ${formatPrice(itemTotal)}\n`;
+  });
 
-      cart.forEach(item => {
-        const p = products.find(x => x.id === item.id);
-        const itemTotal = p.price * item.qty;
-        total += itemTotal;
-        msg += `• ${p.name} × ${item.qty} = ₨${itemTotal.toLocaleString()}\n`;
-      });
+  msg += `\n*کل بل:* ${formatPrice(total)}\n\nشکریہ! ہم جلد کال کریں گے!`;
 
-      msg += `\n*کل بل:* ₨${total.toLocaleString()}\n\nشکریہ!`;
+  // Save order
+  orders.push({
+    date: new Date().toLocaleString("en-PK"),
+    items: [...cart],
+    total,
+    customer: {name, phone, address}
+  });
+  saveData();
 
-      // Save order
-      orders.push({date:new Date().toLocaleString(), items:[...cart], total, customer:{name,phone,address}});
-      saveData();
-      cart = [];
-      localStorage.setItem("zm_cart", "[]");
-      updateCartCount();
+  // Clear cart
+  cart = [];
+  localStorage.setItem("zm_cart", "[]");
+  updateCartCount();
 
-      // 100% working WhatsApp
-      openWhatsAppWithMessage(msg);
-    }
-  </script>
-</body>
-</html>
+  // WhatsApp pe bhejo
+  openWhatsAppWithMessage(msg);
+}
