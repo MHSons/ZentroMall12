@@ -20,6 +20,13 @@
   <div class="max-w-4xl mx-auto px-4 py-16">
     <h1 class="text-5xl font-bold text-center mb-12">Your Cart</h1>
     <div id="cart-items"></div>
+    <div class="mt-8">
+      <div class="flex gap-2">
+        <input type="text" id="coupon" placeholder="Enter Coupon Code (e.g., ZENTRO50)" class="flex-1 p-3 rounded-l border" aria-label="Coupon code" />
+        <button onclick="applyCoupon()" class="bg-green-600 text-white px-6 py-3 rounded-r" aria-label="Apply coupon">Apply</button>
+      </div>
+      <p id="coupon-msg" class="text-green-600 mt-2"></p>
+    </div>
     <div class="text-right text-4xl font-bold mt-10">Total: ₹<span id="total">0</span></div>
   </div>
 
@@ -47,6 +54,7 @@
           </div>`;
       }).join("") || "<p class='text-center text-3xl'>Cart is empty</p>";
       document.getElementById("total").textContent = total.toLocaleString();
+      localStorage.setItem("zm_cart_total", total);
     }
     function changeQty(id, delta) {
       const item = cart.find(x => x.id === id);
@@ -59,6 +67,15 @@
     function removeFromCart(id) {
       cart = cart.filter(x => x.id !== id);
       saveData(); renderCart(); updateCartCount();
+    }
+    function applyCoupon() {
+      const code = document.getElementById("coupon").value;
+      let total = parseInt(localStorage.getItem("zm_cart_total") || 0);
+      if (code === "ZENTRO50" && total > 0) {
+        total = total * 0.5;
+        document.getElementById("coupon-msg").textContent = "🎉 50% OFF applied!";
+      } else document.getElementById("coupon-msg").textContent = "Invalid coupon";
+      document.getElementById("total").textContent = total.toLocaleString();
     }
     renderCart(); updateCartCount();
   </script>
